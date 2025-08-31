@@ -31,10 +31,6 @@ app.use(
   })
 );
 app.use('/', mainRouter);
-// app.get("/", (req, res) => {
-//   res.send("Nice working");
-// });
-
 app.use(errorMiddleware);
 
 function getDistanceInKm(lat1, lon1, lat2, lon2) {
@@ -55,9 +51,9 @@ let onlineDrivers = {};
 io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);
 
-  socket.on("driver:online", ({driverId}) => {
-    onlineDrivers[driverId] = { socketId: socket.id, lat: 0, lon: 0 };
-    console.log(`Driver ${driverId} is online`);          
+  socket.on("driver:online", ({driverId, driverCarType, lat, lon}) => {
+    onlineDrivers[driverId] = { socketId: socket.id, lat: lat, lon: lon, carType : driverCarType };
+    console.log(`Driver ${driverId} is online ${driverCarType}`);          
   });
 
   socket.on("driver:offline", ({driverId}) => {
@@ -73,27 +69,56 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("ride:request", ({pickup, riderData}) => {
+  socket.on("ride:request", ({ riderData}) => {
     for(let driverId in onlineDrivers) {
       const driver = onlineDrivers[driverId];
-      const distance = getDistanceInKm(driver.lat, driver.lon, pickup.lat, pickup.lon);
-      if (distance <= 10) { // Assuming 5 km is the max distance to consider
-        io.to(driver.socketId).emit("ride:new", { pickup, riderData });
+       if (!driver.carType) {
+      console.log(`Driver ${driverId} has no carType`);
+      continue;
+    }
+    console.log(riderData)
+      const distance = getDistanceInKm(driver.lat, driver.lon, riderData.pickupLatLng.lat, riderData.pickupLatLng.lon);
+      console.log(distance)
+      if (distance <= 20 && driver.carType.toLowerCase() == riderData.carType) {
+        console.log("VINITA");
+        io.to(driver.socketId).emit("ride:new", {riderData, driver, distance });
         console.log(`Ride offer sent to driver ${driverId}`);
+      }
+    }
+  });
+
+  socket.on("ride:cancel", ({ rider }) => {
+    console.log("Ride cancelled:", rider);
+
+    for(let driverId in onlineDrivers) {
+      const driver = onlineDrivers[driverId];
+       if (!driver.carType) {
+      console.log(`Driver ${driverId} has no carType`);
+      continue;
+    }
+    
+      const distance = getDistanceInKm(driver.lat, driver.lon, rider.pickupLatLng.lat, rider.pickupLatLng.lon);
+      console.log(distance)
+      if (distance <= 20 && driver.carType.toLowerCase() == rider.carType) {
+        console.log("VINITA");
+        io.to(driver.socketId).emit("ride:cancelled", {riderId : rider._id });
+        
       }
     }
   });
 
   socket.on("rider:subscribeDrivers", ({ lat, lon}) => {
     const nearbyDrivers = [];
+    console.log(`Rider subscribed for nearby drivers at location: ${lat}, ${lon}`);
   for(let driverId in onlineDrivers) {
       const driver = onlineDrivers[driverId];
+      
       const distance = getDistanceInKm(driver.lat, driver.lon, lat, lon);
-      if (distance <= 10) { // Assuming 10 km radius
+      if (distance <= 10) { 
         nearbyDrivers.push({
           driverId,
           lat: driver.lat,
-          lon: driver.lon
+          lon: driver.lon 
         });
       }
     }
@@ -101,6 +126,20 @@ io.on("connection", (socket) => {
     console.log(`Nearby drivers sent to rider: ${nearbyDrivers.length} drivers found`); 
   }
   );
+
+  socket.on("driver:rideAccepted", ({ride}) => {
+    socket.to(ride.riderData.socketId).emit("rider:rideAcceptedByDriver", {ride})
+  })
+
+  socket.on("driver:navigateToPickup", ({riderSocketId}) => {
+    console.log("navigateToPickup", riderSocketId)
+
+    socket.to(riderSocketId).emit("rider:navigateToPickup")
+  })
+  socket.on("driver:beginToJourney", ({riderSocketId}) => {
+    console.log("beginToJourney", riderSocketId);
+    socket.to(riderSocketId).emit("rider:beginToJourney")
+  })
 
   socket.on("disconnect", () => {
     console.log("A user disconnected:", socket.id);

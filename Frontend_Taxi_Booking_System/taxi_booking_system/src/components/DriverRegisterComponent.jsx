@@ -28,7 +28,7 @@ export default function DriverRegisterComponent() {
             console.log("Registration successful", data);
             alert(data.message || "Registration successful");
             if(data.success) {  
-               navigate('/loginAsDriver');
+               navigate('/driver/dashBoard');
             }
                 })
         }catch(err) {

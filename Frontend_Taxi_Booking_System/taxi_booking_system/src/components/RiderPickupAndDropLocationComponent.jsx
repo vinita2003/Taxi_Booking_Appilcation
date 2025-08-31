@@ -22,10 +22,6 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
-export const socket = io("http://localhost:3000", {
-  autoConnect: false,
-  reconnection: true
-}); 
 
 function useDebouncedValue(value, delay = 400) {
   const [v, setV] = useState(value);
@@ -185,7 +181,7 @@ export const redIcon = new L.Icon({
   shadowSize: [41, 41]
 });
 
-const greenIcon = new L.Icon({
+export const greenIcon = new L.Icon({
   iconUrl:
     "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png",
   shadowUrl:
@@ -210,10 +206,7 @@ export default function RiderPickupAndDropLocationComponent() {
 
   // Try browser geolocation on mount
   useEffect(() => {
-    if (!socket.connected) {
-      socket.connect();
-      console.log("Socket Connected on Pickup Page");
-    }
+   
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (pos) => {
@@ -255,7 +248,7 @@ export default function RiderPickupAndDropLocationComponent() {
       alert("Please select both pickup and drop locations.");
       return;
     }
-    setUser((prev) => ({ ...prev,  pickupLatLng, dropLatLng }));
+    setUser((prev) => ({ ...prev,  pickupLatLng, dropLatLng, pickup, drop }));
     console.log("User data updated:", user);
     const response = await api.post('/rider/rideDetails/addLocation', {
         pickupLongitude : pickupLatLng.lon, pickupLatitude : pickupLatLng.lat, dropLongitude: dropLatLng.lon, dropLatitude: dropLatLng.lat,
@@ -324,7 +317,7 @@ export default function RiderPickupAndDropLocationComponent() {
               />
 
               {/* Markers */}
-              {pickupLatLng && <Marker position={[pickupLatLng.lat, pickupLatLng.lon]} icon= {greenIcon} />}
+              {pickupLatLng && <Marker position={[pickupLatLng.lat, pickupLatLng.lon]} icon={greenIcon} />}
               {dropLatLng && <Marker position={[dropLatLng.lat, dropLatLng.lon]}  icon={redIcon}
  />}
 

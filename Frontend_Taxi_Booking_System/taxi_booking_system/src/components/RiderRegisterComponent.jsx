@@ -22,7 +22,7 @@ export default function RiderRegisterComponent() {
                  res.json()).then(data => {
                 console.log("Registration successful", data);
                 if(data.success) {
-                    navigate('/loginAsRider');
+                    navigate('/rider/pickupAndDropLocation');
                 }   
             alert(data.message || "Registration successful");
                 

@@ -1,85 +1,111 @@
 import profileImage from '../assets/ProfileImage.png'
 import { useAuth } from '../context/AuthContext.jsx'
-import { use, useEffect, useState } from "react";
-
-import io from "socket.io-client";
-
-
+import {  useEffect, useState } from "react";
+import { useSocket } from '../context/SocketContext.jsx';
+import { useNavigate } from 'react-router-dom';
 
 export default function DriverDashBoard() {
     const { user } = useAuth()
      const [isOn, setIsOn] = useState(JSON.parse(localStorage.getItem("driverOnline")) || false);
      const[location, setLocation] = useState({lat: 0, lon: 0});
-        const [socket, setSocket] = useState(null);
+      const [rideRequests, setRideRequests] = useState([]);
 
-        useEffect(() => {
-    let watchId;
-    let newSocket;
+   const { socket } = useSocket();
+   const navigate = useNavigate();
 
-    if (isOn) {
-        localStorage.setItem("driverOnline", true);
-      // ✅ connect socket only when driver is ON
-      newSocket = io("http://localhost:3000"); // replace with your server URL
-      setSocket(newSocket);
 
-      // handle socket connection
-      newSocket.on("connect", () => {
-        console.log("Connected to server");
-        newSocket.emit("driver:online", { driverId: user._id });
+// useEffect(() => {
+//   console.log
+//   if (!socket) return;
+//    console.log(socket.id)
+//    console.log(socketId);
+//   const handleConnect = () => {
+//     setSocketId(socket.id); 
+//   };
+
+
+//   socket.on("connect", handleConnect);
+
+//   return () => {
+//     socket.off("connect", handleConnect);
+//   };
+// }, [socket]);
+
+useEffect(() => {
+  if (!socket || !user?._id) return;
+// console.log(socketId)
+  let watchId;
+  console.log(user);
+
+  if (isOn) {
+    localStorage.setItem("driverOnline", true);
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        socket.emit("driver:online", {
+          driverId: user._id,
+          driverCarType: user.carType,
+          lat: latitude,
+          lon: longitude,
+        });
+      },
+      (error) => console.error("Error getting current location:", error),
+      { enableHighAccuracy: true }
+    );
+
+    watchId = navigator.geolocation.watchPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setLocation({ lat: latitude, lon: longitude });
+        socket.emit("driver:updateLocation", {
+          driverId: user._id,
+          lat: latitude,
+          lon: longitude,
+        });
+      },
+      (error) => console.error("Error getting location:", error),
+      { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
+    );
+
+    socket.on("ride:new", (rideData) => {
+      console.log(rideData)
+      
+      setRideRequests((prev) => [...prev, rideData]);
+    });
+
+   socket.on("ride:cancelled", ({ riderId }) => {
+        console.log("Ride Cancelled by rider:", riderId);
+        setRideRequests((prev) => {
+          const updated = prev.filter((ride) => ride.riderData.riderId !== riderId);
+          console.log("Updated rideRequests after cancel:", updated);
+          return updated;
+        });
       });
+  } else {
+    localStorage.setItem("driverOnline", false);
+    socket.emit("driver:offline", { driverId: user._id });
+    socket.off("ride:new");
+    if (watchId) navigator.geolocation.clearWatch(watchId);
+    setLocation({ lat: 0, lon: 0 });
+  }
 
-      // watch driver location
-      watchId = navigator.geolocation.watchPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setLocation({ lat: latitude, lon: longitude });
-          newSocket.emit("driver:updateLocation", {
-            driverId: user._id,
-            lat: latitude,
-            lon: longitude,
-          });
-        },
-        (error) => {
-          console.error("Error getting location:", error);
-        },
-        { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
-      );
+  return () => {
+    if (watchId) navigator.geolocation.clearWatch(watchId);
+    socket.off("ride:new");
+  };
+}, [isOn, user?._id, socket]);
 
-      // listen for rides
-      newSocket.on("ride:request", (rideData) => {
-        alert(`New ride request from ${rideData}`);
-      });
-    } else {
-        localStorage.setItem("driverOnline", false);
-      // ✅ if turned OFF, tell server driver is offline
-      if (socket) {
-        socket.on("disconnect", () => {
-  console.log("Socket disconnected:");
-})
-        socket.emit("driver:offline", { driverId: user._id });
-        socket.disconnect();
-; // close socket
-        setSocket(null);
-      }
 
-      // stop location tracking
-      if (watchId) navigator.geolocation.clearWatch(watchId);
-      setLocation({ lat: 0, lon: 0 });
+useEffect(() => {
+    console.log("RideRequests updated:", rideRequests);
+  }, [rideRequests]);
+
+
+    const handleAccept = (ride) => {
+      socket.emit("driver:rideAccepted", {ride})
+      navigate('/driver/rideAccepted', { state: ride })
     }
-
-    // cleanup on toggle change or unmount
-    return () => {
-      if (watchId) navigator.geolocation.clearWatch(watchId);
-      if (newSocket) {
-        newSocket.on("disconnect", () => {
-  console.log("Socket disconnected:");
-});
-      }
-    };
-  }, [isOn, user._id]);
-
-
-    
 
   return (
     <div>
@@ -104,8 +130,33 @@ export default function DriverDashBoard() {
         }`}
       />
     </button>
+
+
      </div>
      <h1 className= "text-2xl font-bold ">Live Ride Requests</h1>
+     
+     {rideRequests.length === 0 ? (
+        <p className='text-gray-500'>No ride request yet.</p>
+     ): (
+        <div className='space-y-1 max-h-112 overflow-y-auto'>
+          {rideRequests.map((ride, index) => (
+           
+                <div key= {index}
+                className=' p-4 rounded-lg shadow-md bg-white'>
+                  <p><strong>Pickup:</strong> {ride.riderData.pickup}</p>
+                  <p><strong>Drop:</strong> {ride.riderData.drop}</p>
+                  <p><strong>Fare:</strong> {ride.riderData.fareAmount}</p>
+                  <div className='mt-2 flex gap-2'>
+                    <button onClick= {() => handleAccept(ride)} className='bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600'>
+                      Accept
+                    </button>
+                    
+                  </div>
+
+                </div>
+              ))}
+        </div>
+     )}
     </div>
   )
 }

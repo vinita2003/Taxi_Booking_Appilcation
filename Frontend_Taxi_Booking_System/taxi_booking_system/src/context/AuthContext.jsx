@@ -12,6 +12,7 @@ useEffect(() => {
     const checkAuth = async () => {
         try {
             let response = await api.get('/rider/auth/refresh', { withCredentials: true });
+            console.log(response.data.user)
             setUser(response.data.user);
             setAccessToken(response.data.accessToken);
         } catch (error) {

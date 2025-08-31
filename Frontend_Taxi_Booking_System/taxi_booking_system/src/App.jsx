@@ -11,6 +11,11 @@ import DriverDashBoardPage from "./pages/driver/DashBoardPage.jsx";
 import RiderPickupAndDropLocationPage from "./pages/rider/pickupAndDropLocationPage.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
 import RiderComfirmRidePage from "./pages/rider/ConfirmRidePage.jsx";
+import WaitingForRideConfirmationPage from "./pages/rider/WaitingForRideConfirmationPage.jsx";
+import DriverRideAcceptedPage from "./pages/driver/RideAccptedPage.jsx"
+import DriverRideCompletedPage from "./pages/driver/RideCompletedPage.jsx"
+import RiderRideAcceptedPage from "./pages/rider/RideAcceptedPage.jsx"
+import RiderRideCompletedPage from "./pages/rider/RideCompletedPage.jsx"
 import DriverFooterComponent from "./components/DriverFooterComponent.jsx";
 import RiderFooterComponent from "./components/RiderFooterComponent.jsx";
 import DriverPrivateRoutes from "./routes/DriverPrivateRoutes.jsx";
@@ -44,8 +49,13 @@ function App() {
        <Route path= "/rider/pickupAndDropLocation" element= {<RiderPrivateRoutes><RiderPickupAndDropLocationPage/></RiderPrivateRoutes>}></Route>
        <Route path= "/driver/profile" element= {<DriverPrivateRoutes><DriverProfilePage/></DriverPrivateRoutes>}></Route>
        <Route path= "/driver/account" element= {<DriverPrivateRoutes><DriverAccountPage/></DriverPrivateRoutes>}></Route>
-       <Route path= "/driver/dashboard" element= {<RiderPrivateRoutes><DriverDashBoardPage/></RiderPrivateRoutes>}></Route>
+       <Route path= "/driver/dashboard" element= {<DriverPrivateRoutes><DriverDashBoardPage/></DriverPrivateRoutes>}></Route>
         <Route path= "/rider/confirmRide" element= {<RiderPrivateRoutes><RiderComfirmRidePage/></RiderPrivateRoutes>}></Route>
+        <Route path= "/rider/waitingForRideConfirmation" element= {<RiderPrivateRoutes><WaitingForRideConfirmationPage/></RiderPrivateRoutes>}></Route>
+        <Route path= "/driver/rideAccepted" element= {<DriverPrivateRoutes><DriverRideAcceptedPage/></DriverPrivateRoutes>}></Route>
+        <Route path= "/driver/rideCompleted" element= {<DriverPrivateRoutes><DriverRideCompletedPage/></DriverPrivateRoutes>}></Route>
+        <Route path= "/rider/rideAccepted" element= {<RiderPrivateRoutes><RiderRideAcceptedPage/></RiderPrivateRoutes>}></Route>
+        <Route path= "/rider/rideCompleted" element= {<RiderPrivateRoutes><RiderRideCompletedPage/></RiderPrivateRoutes>}></Route>
       </Routes>
        
 
