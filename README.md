@@ -1,7 +1,8 @@
-<div align="center"><h1>Daily News</h1>
+<div align="center"><h1>Taxi_Booking_System</h1>
 Developed a real-time web application using the MERN stack that allows riders to book cabs and drivers to accept rides, featuring real-time location tracking and ride request notifications with
 Socket.IO, an interactive map with Google Maps API/Leaflet to display nearby drivers and routes, authentication and role-based access using JWT and cookies, driver online/offline availability with
 auto-reconnect sockets, and efficient data management with MongoDB for ride history and active sessions
+  
 # Home Page
 <img src = "https://raw.githubusercontent.com/vinita2003/Daily-News/master/Home%20Page%20-%20General%20Category.png">
 # Health Category
