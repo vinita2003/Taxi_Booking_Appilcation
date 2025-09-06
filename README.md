@@ -5,7 +5,7 @@ auto-reconnect sockets, and efficient data management with MongoDB for ride hist
   
 # Rider
 # Signup
-<img src = "Images/SignupRiderPage.png"  height = "600px">
+<img src = "Images/SignupRiderPage.png" width = "600px" height = "600px">
 # Login
 <img src = "Images/LoginRiderPage.png"  height = "600px">
 # PickupAndDropLocation
