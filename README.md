@@ -3,23 +3,15 @@ Developed a real-time web application using the MERN stack that allows riders to
 Socket.IO, an interactive map with Google Maps API/Leaflet to display nearby drivers and routes, authentication and role-based access using JWT and cookies, driver online/offline availability with
 auto-reconnect sockets, and efficient data management with MongoDB for ride history and active sessions
   
-# Home Page
-<img src = "Images/BeginToJourenyPage.png"  height = "600px">
-# Health Category
-<img src = "https://raw.githubusercontent.com/vinita2003/Daily-News/master/Health%20Category.png">
+# Rider
+#Signup
+<img src = "Images/SignupRiderPage.png"  height = "600px">
+#Login
+<img src = "Images/LoginRiderPage.png"  height = "600px">
+#PickupAndDropLocation
+<img src = "Images/PickupAndDropLocationRiderPage.png"  height = "600px">
 
-# Home Page
-<img src = "https://raw.githubusercontent.com/vinita2003/Daily-News/master/Home%20Page%20-%20General%20Category.png">
-# Health Category
-<img src = "https://raw.githubusercontent.com/vinita2003/Daily-News/master/Health%20Category.png">
-# Science Category
-<img src = "https://raw.githubusercontent.com/vinita2003/Daily-News/master/Science%20Category.png">
-# Technology Category
-<img src = "https://raw.githubusercontent.com/vinita2003/Daily-News/master/Technology%20Category.png">
-# Sports Category
-<img src = "https://raw.githubusercontent.com/vinita2003/Daily-News/master/Sports%20Category.png">
-# Entertainment Category
-<img src = "https://raw.githubusercontent.com/vinita2003/Daily-News/master/Entertainment%20Category.png">
+
 
 
 
