@@ -13,11 +13,14 @@ auto-reconnect sockets, and efficient data management with MongoDB for ride hist
 # PickupAndDropLocation
 <img src = "Images/PickupAndDropLocationRiderPage.png"  height = "600px">
 
+# PickupAndDropLocation with map
+<img src = "Images/PickupAndDropLocationPagewithMapRiderPage.png"  height = "600px">
+
 # RideConfirmation
 <img src = "Images/RideConfirmRiderPage.png"  height = "600px">
 
 # RideWaitingConfirmation
-<img src = "Images/RideConfirmRiderPage.png"  height = "600px">
+<img src = "Images/RideWaitingRiderPage.png"  height = "600px">
 
 # NavigateToPickup
 <img src = "Images/NavigateToPickupPage.png"  height = "600px">
