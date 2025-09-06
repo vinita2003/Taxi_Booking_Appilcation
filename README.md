@@ -28,6 +28,27 @@ auto-reconnect sockets, and efficient data management with MongoDB for ride hist
 # RideCompletedStatus
 <img src = "Images/RideCompleteStatus.png"  height = "600px">
 
+# Driver
+# Signup
+<img src = "Images/SignupDriverPage.png"  height = "800px">
+
+# Login
+<img src = "Images/LoginDriverPage.png"  height = "600px">
+
+# Dashboard 
+<img src = "Images/DashboardDriverPage.png"  height = "600px">
+
+# Dashboard with map
+<img src = "Images/DriverDashboardWithLiveRequestDriverPage.png"  height = "600px">
+
+# NavigateToPickup
+<img src = "Images/NavigateToPickupPage.png"  height = "600px">
+
+# BeginToJourney
+<img src = "Images/BeginToJourenyPage.png"  height = "600px">
+
+# RideCompletedStatus
+<img src = "Images/RideCompleteStatus.png"  height = "600px">
 
 
 
