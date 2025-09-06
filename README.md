@@ -4,7 +4,7 @@ Socket.IO, an interactive map with Google Maps API/Leaflet to display nearby dri
 auto-reconnect sockets, and efficient data management with MongoDB for ride history and active sessions
   
 # Home Page
-<img src = "https://raw.githubusercontent.com/vinita2003/Daily-News/master/Home%20Page%20-%20General%20Category.png">
+<img src = "Images/BeginToJourenyPage.png">
 # Health Category
 <img src = "https://raw.githubusercontent.com/vinita2003/Daily-News/master/Health%20Category.png">
 
