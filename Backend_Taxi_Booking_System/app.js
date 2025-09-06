@@ -128,6 +128,21 @@ io.on("connection", (socket) => {
   );
 
   socket.on("driver:rideAccepted", ({ride}) => {
+    for(let driverId in onlineDrivers) {
+      const driver = onlineDrivers[driverId];
+    //    if (!driver.carType) {
+    //   console.log(`Driver ${driverId} has no carType`);
+    //   continue;
+    // }
+    
+      const distance = getDistanceInKm(ride.driver.lat, ride.driver.lon, ride.riderData.pickupLatLng.lat, ride.riderData.pickupLatLng.lon);
+      console.log(distance)
+      if (distance <= 20 && driver.carType.toLowerCase() == ride.riderData.carType && ride.driver.socketId != driver.socketId) {
+        console.log("VINITA");
+        io.to(driver.socketId).emit("ride:cancelled", {riderId : ride.riderData.riderId });
+       
+      }
+    }
     socket.to(ride.riderData.socketId).emit("rider:rideAcceptedByDriver", {ride})
   })
 
