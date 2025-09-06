@@ -4,11 +4,11 @@ Socket.IO, an interactive map with Google Maps API/Leaflet to display nearby dri
 auto-reconnect sockets, and efficient data management with MongoDB for ride history and active sessions
   
 # Rider
-#Signup
+# Signup
 <img src = "Images/SignupRiderPage.png"  height = "600px">
-#Login
+# Login
 <img src = "Images/LoginRiderPage.png"  height = "600px">
-#PickupAndDropLocation
+# PickupAndDropLocation
 <img src = "Images/PickupAndDropLocationRiderPage.png"  height = "600px">
 
 
