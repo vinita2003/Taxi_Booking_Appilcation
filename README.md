@@ -41,7 +41,7 @@ auto-reconnect sockets, and efficient data management with MongoDB for ride hist
 # Dashboard 
 <img src = "Images/DashboardDriverPage.png"  height = "600px">
 
-# Dashboard with map
+# Dashboard with LiveRequest
 <img src = "Images/DriverDashboardWithLiveRequestDriverPage.png"  height = "600px">
 
 # NavigateToPickup
