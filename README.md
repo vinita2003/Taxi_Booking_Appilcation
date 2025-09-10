@@ -1,7 +1,5 @@
 <div align="center"><h1>Taxi_Booking_System</h1>
-Developed a real-time web application using the MERN stack that allows riders to book cabs and drivers to accept rides, featuring real-time location tracking and ride request notifications with
-Socket.IO, an interactive map with Google Maps API/Leaflet to display nearby drivers and routes, authentication and role-based access using JWT and cookies, driver online/offline availability with
-auto-reconnect sockets, and efficient data management with MongoDB for ride history and active sessions
+The Taxi Booking System is a real-time web application developed using the MERN stack that enables riders to book cabs and drivers to accept rides seamlessly. It features real-time ride updates and notifications powered by Socket.io, along with driver online/offline availability and auto-reconnect functionality for uninterrupted service. The system integrates the Leaflet Map API to allow users to select pickup and drop-off locations, view nearby drivers, and visualize optimized routes. To ensure security, it implements JWT-based authentication and role-based access control with cookies. The platform also provides a responsive and interactive UI built with Tailwind CSS, ensuring a smooth experience across devices. On the backend, it leverages Node.js, Express.js, and MongoDB to efficiently manage bookings, ride history, and active sessions, making the system both scalable and reliable
   
 # Rider
 # Signup
